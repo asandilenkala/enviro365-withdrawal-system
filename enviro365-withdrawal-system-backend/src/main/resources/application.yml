@@ -1,0 +1,108 @@
+# ===============================================
+# Enviro365 Withdrawal Management System
+# Backend Application Configuration
+# ===============================================
+
+spring:
+  application:
+    name: enviro365-withdrawal-system-backend
+
+  # Server Configuration
+  server:
+    port: ${SERVER_PORT}
+    error:
+      include-message: always
+      include-binding-errors: always
+
+  # H2 Database Configuration
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+      settings:
+        web-allow-others: false
+
+  datasource:
+    url: ${DB_URL}
+    driver-class-name: org.h2.Driver
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    hikari:
+      connection-timeout: 20000
+      maximum-pool-size: 5
+
+  # JPA & Hibernate Configuration
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        use_sql_comments: true
+        jdbc:
+          batch_size: 20
+        order_inserts: true
+        order_updates: true
+    defer-datasource-initialization: true
+
+  sql:
+    init:
+      mode: always  # Always initialize the database
+      data-locations: classpath:data.sql
+      schema-locations: classpath:schema.sql
+
+  # Security Configuration
+  security:
+    user:
+      name: ${ADMIN_USERNAME}
+      password: ${ADMIN_PASSWORD}
+      roles: ${ADMIN_ROLES}
+    csrf:
+      enabled: false
+
+# CORS Configuration
+cors:
+  allowed:
+    origins: ${CORS_ORIGINS}
+    methods: GET,POST,PUT,DELETE,OPTIONS
+    headers: "*"
+    allow-credentials: true
+    max-age: 3600
+
+# File Export Configuration
+export:
+  csv:
+    directory: ${CSV_EXPORT_DIR}
+    max-file-size: ${CSV_MAX_SIZE}
+
+# Logging Configuration
+logging:
+  level:
+    com.enviro.assessment: DEBUG
+    org.springframework.web: INFO
+    org.hibernate: WARN
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
+  file:
+    name: ./logs/application.log
+
+# API Documentation (Swagger/OpenAPI)
+springdoc:
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui.html
+  api-docs:
+    path: /v3/api-docs
+
+# Management/Actuator
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      show-details: always

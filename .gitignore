@@ -1,0 +1,170 @@
+# ===============================================
+# Enviro365 Withdrawal Management System
+# Root .gitignore for both Frontend and Backend
+# ===============================================
+
+# === Environment Files ===
+.env
+.env.local
+.env.production
+.env.development
+.env.test
+.env.*.local
+*.env
+
+# === Backend Specific ===
+# Compiled output
+**/backend/target/
+**/backend/out/
+**/backend/build/
+
+# Spring Boot
+**/backend/.classpath
+**/backend/.project
+**/backend/.settings/
+**/backend/.springBeans
+**/backend/.sts4-cache
+
+# Maven
+**/backend/pom.xml.tag
+**/backend/pom.xml.releaseBackup
+**/backend/pom.xml.versionsBackup
+**/backend/pom.xml.next
+**/backend/release.properties
+**/backend/dependency-reduced-pom.xml
+**/backend/buildNumber.properties
+**/backend/.mvn/timing.properties
+**/backend/.mvn/wrapper/maven-wrapper.jar
+
+# Logs
+**/backend/logs/
+**/backend/*.log
+**/backend/spring.log
+**/backend/*.log.*
+
+# Database exports
+**/backend/exports/
+**/backend/*.csv
+**/backend/*.db
+**/backend/*.h2.db
+**/backend/*.mv.db
+**/backend/*.trace.db
+
+# === Frontend Specific ===
+# Dependencies
+**/frontend/node_modules/
+**/frontend/.pnp/
+**/frontend/.pnp.js
+
+# Testing
+**/frontend/coverage/
+**/frontend/.nyc_output/
+
+# Production builds
+**/frontend/build/
+**/frontend/dist/
+**/frontend/.next/
+**/frontend/out/
+
+# Debug logs
+**/frontend/npm-debug.log*
+**/frontend/yarn-debug.log*
+**/frontend/yarn-error.log*
+**/frontend/.pnpm-debug.log*
+
+# Editor directories and files
+**/frontend/.vscode/
+**/frontend/.idea/
+**/frontend/*.suo
+**/frontend/*.ntvs*
+**/frontend/*.njsproj
+**/frontend/*.sln
+**/frontend/*.sw?
+
+# OS metadata
+**/frontend/.DS_Store
+**/frontend/Thumbs.db
+
+# Optional npm cache
+**/frontend/.npm/
+
+# Optional eslint cache
+**/frontend/.eslintcache
+
+# Optional stylelint cache
+**/frontend/.stylelintcache
+
+# === IDE Configuration ===
+# IntelliJ IDEA
+.idea/
+*.iml
+*.iws
+*.ipr
+out/
+
+# VS Code
+.vscode/
+*.code-workspace
+
+# Eclipse
+.settings/
+.classpath
+.project
+.factorypath
+
+# NetBeans
+nbproject/
+nbactions.xml
+nbbuild/
+dist/
+nbdist/
+.nb-gradle/
+
+# === Operating System Files ===
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+Desktop.ini
+*~
+.directory
+.Trash-*
+
+# === Docker ===
+**/docker/volumes/
+*.pid
+docker-compose.override.yml
+
+# === Temp Files ===
+*.tmp
+*.temp
+*.cache
+*.lock
+*.log
+*.bak
+*.swp
+*~
+
+# === Project Specific ===
+# Reports
+**/reports/
+**/test-results/
+*.html
+
+# Backup files
+*.backup
+*.old
+*.orig
+
+# Secret files
+*.jks
+*.p12
+*.pfx
+*.pem
+*.crt
+*.key
+*.cer
