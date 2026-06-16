@@ -1,5 +1,3 @@
-I'll provide the complete README.md with all endpoints, users, passwords, roles, and Docker instructions.
-
 ## Complete README.md
 
 ```markdown
