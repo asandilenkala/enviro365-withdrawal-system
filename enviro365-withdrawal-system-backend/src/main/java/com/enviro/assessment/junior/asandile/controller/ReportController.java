@@ -1,8 +1,9 @@
 package com.enviro.assessment.junior.asandile.controller;
 
 import com.enviro.assessment.junior.asandile.dto.request.FilterRequestDTO;
-import com.enviro.assessment.junior.asandile.dto.response.ApiResponseDTO;
+import com.enviro.assessment.junior.asandile.exception.AccessDeniedException;
 import com.enviro.assessment.junior.asandile.service.ReportService;
+import com.enviro.assessment.junior.asandile.service.UserContext;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -12,7 +13,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
 import java.util.UUID;
 
 /**
@@ -30,6 +30,7 @@ import java.util.UUID;
 public class ReportController {
 
     private final ReportService reportService;
+    private final UserContext userContext;
 
     /**
      * Generate CSV report of withdrawals for an investor
@@ -46,22 +47,39 @@ public class ReportController {
 
         log.info("REST request to generate withdrawal report for investor: {}", investorId);
 
-        String csvContent = reportService.generateWithdrawalReport(investorId, filterDTO);
+        try {
+            // Check access: Investors can only download their own reports
+            if (userContext.isInvestor()) {
+                UUID currentInvestorId = userContext.getCurrentInvestorId();
+                if (currentInvestorId == null || !currentInvestorId.equals(investorId)) {
+                    throw new AccessDeniedException("You can only download reports for your own portfolio");
+                }
+            }
 
-        byte[] csvBytes = csvContent.getBytes();
+            String csvContent = reportService.generateWithdrawalReport(investorId, filterDTO);
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.parseMediaType("text/csv"));
-        headers.setContentDispositionFormData("attachment", "withdrawals_report_" + investorId + ".csv");
-        headers.setContentLength(csvBytes.length);
+            byte[] csvBytes = csvContent.getBytes();
 
-        return ResponseEntity.ok()
-                .headers(headers)
-                .body(csvBytes);
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.parseMediaType("text/csv"));
+            headers.setContentDispositionFormData("attachment", "withdrawals_report_" + investorId + ".csv");
+            headers.setContentLength(csvBytes.length);
+
+            return ResponseEntity.ok()
+                    .headers(headers)
+                    .body(csvBytes);
+
+        } catch (AccessDeniedException e) {
+            log.error("Access denied: {}", e.getMessage());
+            return ResponseEntity.status(403).build();
+        } catch (Exception e) {
+            log.error("Error generating report: {}", e.getMessage());
+            return ResponseEntity.status(500).build();
+        }
     }
 
     /**
-     * Generate CSV report of all withdrawals (admin)
+     * Generate CSV report of all withdrawals (admin only)
      *
      * @param filterDTO filter criteria
      * @return CSV file as downloadable response
@@ -73,17 +91,28 @@ public class ReportController {
 
         log.info("REST request to generate all withdrawals report");
 
-        String csvContent = reportService.generateAllWithdrawalsReport(filterDTO);
+        try {
+            if (!userContext.isAdmin()) {
+                log.warn("Access denied: User is not admin");
+                return ResponseEntity.status(403).build();
+            }
 
-        byte[] csvBytes = csvContent.getBytes();
+            String csvContent = reportService.generateAllWithdrawalsReport(filterDTO);
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.parseMediaType("text/csv"));
-        headers.setContentDispositionFormData("attachment", "all_withdrawals_report.csv");
-        headers.setContentLength(csvBytes.length);
+            byte[] csvBytes = csvContent.getBytes();
 
-        return ResponseEntity.ok()
-                .headers(headers)
-                .body(csvBytes);
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.parseMediaType("text/csv"));
+            headers.setContentDispositionFormData("attachment", "all_withdrawals_report.csv");
+            headers.setContentLength(csvBytes.length);
+
+            return ResponseEntity.ok()
+                    .headers(headers)
+                    .body(csvBytes);
+
+        } catch (Exception e) {
+            log.error("Error generating all withdrawals report: {}", e.getMessage());
+            return ResponseEntity.status(500).build();
+        }
     }
 }

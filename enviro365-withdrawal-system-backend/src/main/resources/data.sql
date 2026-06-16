@@ -1,46 +1,47 @@
 -- ===============================================
--- Sample Data for Enviro365 Withdrawal Management System
+-- DATA ONLY - Users and Sample Data
 -- ===============================================
 
--- Insert sample investors
+-- Insert investors
 INSERT INTO investors (id, first_name, last_name, email, phone_number, date_of_birth, created_at, updated_at) VALUES
 ('123e4567-e89b-12d3-a456-426614174000', 'John', 'Smith', 'john.smith@email.com', '+1 555-0100', '1970-05-15 00:00:00', CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP()),
 ('223e4567-e89b-12d3-a456-426614174001', 'Sarah', 'Johnson', 'sarah.johnson@email.com', '+1 555-0101', '1985-08-22 00:00:00', CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP()),
 ('323e4567-e89b-12d3-a456-426614174002', 'Michael', 'Williams', 'michael.williams@email.com', '+1 555-0102', '1955-03-10 00:00:00', CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP()),
 ('423e4567-e89b-12d3-a456-426614174003', 'Emily', 'Brown', 'emily.brown@email.com', '+1 555-0103', '1990-11-30 00:00:00', CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP());
 
+-- Insert users with REAL BCrypt encoded passwords
+-- Password: enviro365_2024
+-- BCrypt hash: $2a$10$cZA14fEWTV4cDiWxr6EUBuTnh4Y6qqPAzJBSJfxcY0XhVEc94SeAm
+INSERT INTO users (id, username, password, email, role, investor_id, enabled, created_at, updated_at) VALUES
+('123e4567-e89b-12d3-a456-426614174500', 'enviro_admin', '$2a$10$cZA14fEWTV4cDiWxr6EUBuTnh4Y6qqPAzJBSJfxcY0XhVEc94SeAm', 'admin@enviro365.com', 'ADMIN', NULL, true, CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP()),
+('123e4567-e89b-12d3-a456-426614174501', 'john_smith', '$2a$10$cZA14fEWTV4cDiWxr6EUBuTnh4Y6qqPAzJBSJfxcY0XhVEc94SeAm', 'john.smith@email.com', 'INVESTOR', '123e4567-e89b-12d3-a456-426614174000', true, CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP()),
+('123e4567-e89b-12d3-a456-426614174502', 'sarah_johnson', '$2a$10$cZA14fEWTV4cDiWxr6EUBuTnh4Y6qqPAzJBSJfxcY0XhVEc94SeAm', 'sarah.johnson@email.com', 'INVESTOR', '223e4567-e89b-12d3-a456-426614174001', true, CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP()),
+('123e4567-e89b-12d3-a456-426614174503', 'michael_williams', '$2a$10$cZA14fEWTV4cDiWxr6EUBuTnh4Y6qqPAzJBSJfxcY0XhVEc94SeAm', 'michael.williams@email.com', 'INVESTOR', '323e4567-e89b-12d3-a456-426614174002', true, CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP()),
+('123e4567-e89b-12d3-a456-426614174504', 'emily_brown', '$2a$10$cZA14fEWTV4cDiWxr6EUBuTnh4Y6qqPAzJBSJfxcY0XhVEc94SeAm', 'emily.brown@email.com', 'INVESTOR', '423e4567-e89b-12d3-a456-426614174003', true, CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP());
+
 -- Insert portfolios
-INSERT INTO portfolios (id, portfolio_name, total_balance, investor_id) VALUES
-('123e4567-e89b-12d3-a456-426614174100', 'John Smith Retirement Portfolio', 250000.00, '123e4567-e89b-12d3-a456-426614174000'),
-('223e4567-e89b-12d3-a456-426614174101', 'Sarah Johnson Growth Portfolio', 175000.00, '223e4567-e89b-12d3-a456-426614174001'),
-('323e4567-e89b-12d3-a456-426614174102', 'Michael Williams Conservative Portfolio', 500000.00, '323e4567-e89b-12d3-a456-426614174002'),
-('423e4567-e89b-12d3-a456-426614174103', 'Emily Brown Aggressive Portfolio', 95000.00, '423e4567-e89b-12d3-a456-426614174003');
+INSERT INTO portfolios (id, portfolio_name, total_balance, investor_id, created_at, updated_at) VALUES
+('123e4567-e89b-12d3-a456-426614174100', 'John Smith Retirement Portfolio', 250000.00, '123e4567-e89b-12d3-a456-426614174000', CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP()),
+('223e4567-e89b-12d3-a456-426614174101', 'Sarah Johnson Growth Portfolio', 175000.00, '223e4567-e89b-12d3-a456-426614174001', CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP()),
+('323e4567-e89b-12d3-a456-426614174102', 'Michael Williams Conservative Portfolio', 500000.00, '323e4567-e89b-12d3-a456-426614174002', CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP()),
+('423e4567-e89b-12d3-a456-426614174103', 'Emily Brown Aggressive Portfolio', 95000.00, '423e4567-e89b-12d3-a456-426614174003', CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP());
 
--- Insert products for John Smith (age 54)
-INSERT INTO products (id, product_name, product_type, balance, portfolio_id) VALUES
-('123e4567-e89b-12d3-a456-426614174200', 'Retirement Fund 2030', 'RETIREMENT', 150000.00, '123e4567-e89b-12d3-a456-426614174100'),
-('123e4567-e89b-12d3-a456-426614174201', 'S&P 500 Index Fund', 'EQUITIES', 75000.00, '123e4567-e89b-12d3-a456-426614174100'),
-('123e4567-e89b-12d3-a456-426614174202', 'High Yield Savings', 'SAVINGS', 25000.00, '123e4567-e89b-12d3-a456-426614174100');
+-- Insert products
+INSERT INTO products (id, product_name, product_type, balance, portfolio_id, created_at, updated_at) VALUES
+('123e4567-e89b-12d3-a456-426614174200', 'Retirement Fund 2030', 'RETIREMENT', 150000.00, '123e4567-e89b-12d3-a456-426614174100', CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP()),
+('123e4567-e89b-12d3-a456-426614174201', 'S&P 500 Index Fund', 'EQUITIES', 75000.00, '123e4567-e89b-12d3-a456-426614174100', CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP()),
+('123e4567-e89b-12d3-a456-426614174202', 'High Yield Savings', 'SAVINGS', 25000.00, '123e4567-e89b-12d3-a456-426614174100', CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP()),
+('223e4567-e89b-12d3-a456-426614174200', 'Tech Growth Fund', 'INVESTMENT', 100000.00, '223e4567-e89b-12d3-a456-426614174101', CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP()),
+('223e4567-e89b-12d3-a456-426614174201', 'Emergency Savings', 'SAVINGS', 50000.00, '223e4567-e89b-12d3-a456-426614174101', CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP()),
+('223e4567-e89b-12d3-a456-426614174202', 'Bond Portfolio', 'BONDS', 25000.00, '223e4567-e89b-12d3-a456-426614174101', CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP()),
+('323e4567-e89b-12d3-a456-426614174200', 'Retirement Income Fund', 'RETIREMENT', 300000.00, '323e4567-e89b-12d3-a456-426614174102', CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP()),
+('323e4567-e89b-12d3-a456-426614174201', 'Dividend Stocks', 'EQUITIES', 150000.00, '323e4567-e89b-12d3-a456-426614174102', CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP()),
+('323e4567-e89b-12d3-a456-426614174202', 'Treasury Bonds', 'BONDS', 50000.00, '323e4567-e89b-12d3-a456-426614174102', CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP()),
+('423e4567-e89b-12d3-a456-426614174200', 'Crypto Fund', 'INVESTMENT', 50000.00, '423e4567-e89b-12d3-a456-426614174103', CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP()),
+('423e4567-e89b-12d3-a456-426614174201', 'Small Cap Fund', 'EQUITIES', 35000.00, '423e4567-e89b-12d3-a456-426614174103', CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP()),
+('423e4567-e89b-12d3-a456-426614174202', 'Money Market', 'SAVINGS', 10000.00, '423e4567-e89b-12d3-a456-426614174103', CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP());
 
--- Insert products for Sarah Johnson (age 39)
-INSERT INTO products (id, product_name, product_type, balance, portfolio_id) VALUES
-('223e4567-e89b-12d3-a456-426614174200', 'Tech Growth Fund', 'INVESTMENT', 100000.00, '223e4567-e89b-12d3-a456-426614174101'),
-('223e4567-e89b-12d3-a456-426614174201', 'Emergency Savings', 'SAVINGS', 50000.00, '223e4567-e89b-12d3-a456-426614174101'),
-('223e4567-e89b-12d3-a456-426614174202', 'Bond Portfolio', 'BONDS', 25000.00, '223e4567-e89b-12d3-a456-426614174101');
-
--- Insert products for Michael Williams (age 69 - eligible for retirement withdrawal)
-INSERT INTO products (id, product_name, product_type, balance, portfolio_id) VALUES
-('323e4567-e89b-12d3-a456-426614174200', 'Retirement Income Fund', 'RETIREMENT', 300000.00, '323e4567-e89b-12d3-a456-426614174102'),
-('323e4567-e89b-12d3-a456-426614174201', 'Dividend Stocks', 'EQUITIES', 150000.00, '323e4567-e89b-12d3-a456-426614174102'),
-('323e4567-e89b-12d3-a456-426614174202', 'Treasury Bonds', 'BONDS', 50000.00, '323e4567-e89b-12d3-a456-426614174102');
-
--- Insert products for Emily Brown (age 34)
-INSERT INTO products (id, product_name, product_type, balance, portfolio_id) VALUES
-('423e4567-e89b-12d3-a456-426614174200', 'Crypto Fund', 'INVESTMENT', 50000.00, '423e4567-e89b-12d3-a456-426614174103'),
-('423e4567-e89b-12d3-a456-426614174201', 'Small Cap Fund', 'EQUITIES', 35000.00, '423e4567-e89b-12d3-a456-426614174103'),
-('423e4567-e89b-12d3-a456-426614174202', 'Money Market', 'SAVINGS', 10000.00, '423e4567-e89b-12d3-a456-426614174103');
-
--- Insert sample withdrawals (using empty string '' instead of NULL for rejection_reason)
+-- Insert withdrawals
 INSERT INTO withdrawals (id, amount, product_id, product_name, status, rejection_reason, investor_id, created_at, processed_at) VALUES
 ('123e4567-e89b-12d3-a456-426614174300', 10000.00, '123e4567-e89b-12d3-a456-426614174201', 'S&P 500 Index Fund', 'PROCESSED', '', '123e4567-e89b-12d3-a456-426614174000', '2024-01-15 10:30:00', '2024-01-16 14:20:00'),
 ('123e4567-e89b-12d3-a456-426614174301', 5000.00, '123e4567-e89b-12d3-a456-426614174202', 'High Yield Savings', 'APPROVED', '', '123e4567-e89b-12d3-a456-426614174000', '2024-02-01 09:15:00', '2024-02-02 11:00:00'),

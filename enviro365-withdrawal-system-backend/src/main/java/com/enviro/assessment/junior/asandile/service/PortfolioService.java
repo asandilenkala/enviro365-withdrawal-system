@@ -16,12 +16,6 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-/**
- * Service class for portfolio management operations
- *
- * @author Asandile
- * @version 1.0
- */
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -32,47 +26,56 @@ public class PortfolioService {
     private final InvestorRepository investorRepository;
     private final PortfolioMapper portfolioMapper;
 
-    /**
-     * Get portfolio by investor ID
-     *
-     * @param investorId investor UUID
-     * @return portfolio response DTO
-     * @throws ResourceNotFoundException if investor or portfolio not found
-     */
     @Transactional(readOnly = true)
     public PortfolioResponseDTO getPortfolioByInvestorId(UUID investorId) throws ResourceNotFoundException {
         log.info("Fetching portfolio for investor: {}", investorId);
 
-        Investor investor = investorRepository.findByIdWithPortfolio(investorId)
-                .orElseThrow(() -> new ResourceNotFoundException("Investor", investorId.toString()));
+        try {
+            Investor investor = investorRepository.findByIdWithPortfolio(investorId)
+                    .orElseThrow(() -> {
+                        log.error("Investor not found with id: {}", investorId);
+                        return new ResourceNotFoundException("Investor", investorId.toString());
+                    });
 
-        Portfolio portfolio = investor.getPortfolio();
-        if (portfolio == null) {
-            throw new ResourceNotFoundException("Portfolio not found for investor: " + investorId);
+            Portfolio portfolio = investor.getPortfolio();
+            if (portfolio == null) {
+                log.error("Portfolio not found for investor: {}", investorId);
+                throw new ResourceNotFoundException("Portfolio not found for investor: " + investorId);
+            }
+
+            portfolio.setTotalBalance(portfolio.calculateTotalBalance());
+            log.info("Portfolio retrieved successfully for investor: {}", investorId);
+
+            return portfolioMapper.toDto(portfolio);
+
+        } catch (ResourceNotFoundException e) {
+            throw e;
+        } catch (Exception e) {
+            log.error("Error fetching portfolio for investor {}: {}", investorId, e.getMessage());
+            throw new RuntimeException("Failed to fetch portfolio: " + e.getMessage(), e);
         }
-
-        // Update total balance
-        portfolio.setTotalBalance(portfolio.calculateTotalBalance());
-
-        return portfolioMapper.toDto(portfolio);
     }
 
-    /**
-     * Get all portfolios (admin)
-     *
-     * @return list of portfolio response DTOs
-     */
     @Transactional(readOnly = true)
     public List<PortfolioResponseDTO> getAllPortfolios() {
         log.info("Fetching all portfolios");
 
-        List<Portfolio> portfolios = portfolioRepository.findAll();
+        try {
+            List<Portfolio> portfolios = portfolioRepository.findAll();
 
-        return portfolios.stream()
-                .map(portfolio -> {
-                    portfolio.setTotalBalance(portfolio.calculateTotalBalance());
-                    return portfolioMapper.toDto(portfolio);
-                })
-                .collect(Collectors.toList());
+            List<PortfolioResponseDTO> result = portfolios.stream()
+                    .map(portfolio -> {
+                        portfolio.setTotalBalance(portfolio.calculateTotalBalance());
+                        return portfolioMapper.toDto(portfolio);
+                    })
+                    .collect(Collectors.toList());
+
+            log.info("Retrieved {} portfolios", result.size());
+            return result;
+
+        } catch (Exception e) {
+            log.error("Error fetching all portfolios: {}", e.getMessage());
+            throw new RuntimeException("Failed to fetch all portfolios: " + e.getMessage(), e);
+        }
     }
 }

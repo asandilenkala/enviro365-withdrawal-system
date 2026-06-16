@@ -55,10 +55,6 @@ spring:
 
   # Security Configuration
   security:
-    user:
-      name: ${ADMIN_USERNAME}
-      password: ${ADMIN_PASSWORD}
-      roles: ${ADMIN_ROLES}
     csrf:
       enabled: false
 
