@@ -934,6 +934,26 @@ enviro365-withdrawal-system/
 └── README.md
 ```
 
+### Project Structure with Single Docker Management
+
+```
+enviro365-withdrawal-system/
+├── enviro365-withdrawal-system-backend/
+│   ├── src/
+│   ├── Dockerfile          # Backend Dockerfile
+│   └── pom.xml
+├── enviro365-withdrawal-system-frontend/
+│   ├── src/
+│   ├── Dockerfile          # Frontend Dockerfile
+│   ├── nginx.conf
+│   └── package.json
+├── docker-compose.yml      # Single compose file at root
+├── .dockerignore           # Root level
+├── start.sh
+├── stop.sh
+└── README.md
+```
+
 ## License
 
 Proprietary - Enviro365 Investments
@@ -1088,3 +1108,30 @@ Enviro365 Investments is automating its withdrawal notice process to eliminate m
 cd enviro365-withdrawal-system-backend
 mvn clean install
 mvn spring-boot:run
+
+---
+
+## AI Usage Disclosure
+
+This project was developed with assistance from **DeepSeek** AI tool. The AI was used for:
+
+### Backend Assistance
+- **Configuration files** - SecurityConfig, CorsConfig, and application.yml structure
+- **Exception handling** - GlobalExceptionHandler and custom exception classes
+- **Docker files** - Dockerfiles and docker-compose.yml configuration
+
+### My Own Work
+- **Project structure** - All directory organization and package structure
+- **Business logic** - Service layer implementation and validation rules
+- **Frontend** - Complete React components, hooks, and styling
+- **Database** - Schema design, entity relationships, and data.sql
+- **Integration** - Connecting frontend to backend APIs
+- **Testing** - Unit tests for services and controllers
+- **Documentation** - README and API documentation
+
+### Understanding
+I reviewed, tested, and fully understand all AI-generated code before implementation. All code follows the project's coding standards and business requirements.
+
+---
+
+**DeepSeek** was the only AI tool used in this project.
