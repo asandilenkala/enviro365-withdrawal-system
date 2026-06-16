@@ -971,13 +971,11 @@ For support, please contact the development team or create an issue in the repos
 
 **Last Updated:** June 2026
 **Version:** 1.0.0
-```
 
-Now let's create the Docker files and ensure everything is ready to ship.
 
 ## Docker Compose File (docker-compose.yml)
 
-```yaml
+yaml
 version: '3.8'
 
 services:
@@ -1026,7 +1024,7 @@ services:
 networks:
   enviro365-network:
     driver: bridge
-```# Enviro365 Withdrawal Management System
+# Enviro365 Withdrawal Management System
 
 A full-stack application for managing investor withdrawals with business rule validation.
 
@@ -1104,7 +1102,7 @@ Enviro365 Investments is automating its withdrawal notice process to eliminate m
 - Docker (optional)
 
 ### Backend Setup
-```bash
+bash
 cd enviro365-withdrawal-system-backend
 mvn clean install
 mvn spring-boot:run
